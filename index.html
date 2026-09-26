@@ -4,44 +4,202 @@
   <meta charset="utf-8">
   <title>TalkVisual305</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="TalkVisual305 is a personal content-automation tool for publishing short-form video to TikTok.">
+  <meta name="description" content="TalkVisual305 — a content distribution platform for creators. Publish short-form video to TikTok.">
   <style>
-    body { font-family: system-ui, -apple-system, Arial, sans-serif; margin: 0; color: #1a1a1a; line-height: 1.6; }
-    .wrap { max-width: 720px; margin: 0 auto; padding: 60px 24px; }
-    h1 { font-size: 2rem; margin-bottom: 0.25em; }
-    h2 { font-size: 1.25rem; margin-top: 2.5em; }
-    p { color: #333; }
-    nav { margin-top: 2.5em; padding-top: 1.5em; border-top: 1px solid #eee; }
-    nav a { display: inline-block; margin-right: 1.5em; color: #1a1a1a; text-decoration: none; font-weight: 600; }
-    nav a:hover { text-decoration: underline; }
-    footer { color: #888; font-size: 0.85rem; margin-top: 3em; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .logo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff0050, #00f2ea);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 32px;
+      box-shadow: 0 0 60px rgba(0, 242, 234, 0.15), 0 0 60px rgba(255, 0, 80, 0.15);
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+    .tagline {
+      font-size: 1.1rem;
+      color: #888;
+      max-width: 480px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+    .connect-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #ff0050, #00f2ea);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 17px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .connect-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(255, 0, 80, 0.3), 0 8px 30px rgba(0, 242, 234, 0.2);
+    }
+    .connect-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: #fff;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 720px;
+      width: 100%;
+      margin-top: 60px;
+    }
+    .feature-card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: left;
+    }
+    .feature-card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.5;
+    }
+    .feature-icon {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+    .nav-links {
+      margin-top: 48px;
+      display: flex;
+      gap: 24px;
+    }
+    .nav-links a {
+      color: #666;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .nav-links a:hover {
+      color: #aaa;
+      text-decoration: underline;
+    }
+    footer {
+      color: #444;
+      font-size: 12px;
+      margin-top: 24px;
+    }
+    .scopes-note {
+      font-size: 12px;
+      color: #555;
+      margin-top: 16px;
+      max-width: 400px;
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="hero">
+    <div class="logo">TV</div>
     <h1>TalkVisual305</h1>
-    <p>TalkVisual305 is a personal content-automation tool that publishes short-form video content to TikTok on a schedule.</p>
+    <p class="tagline">A content distribution platform for creators. Connect your TikTok account to publish short-form video content directly from your dashboard.</p>
 
-    <p>This site documents the application for TikTok's developer review process. TalkVisual305 connects to TikTok using the
-    <strong>Login Kit</strong> (to verify account ownership) and the <strong>Content Posting API</strong> (to publish
-    pre-produced video content directly to the connected account).</p>
+    <a class="connect-btn" id="connectBtn" href="#">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.35 6.35 0 0 0 3.14 15.2a6.35 6.35 0 0 0 6.35 6.33 6.35 6.35 0 0 0 6.35-6.33V8.88a8.18 8.18 0 0 0 4.75 1.52V6.96a4.83 4.83 0 0 1-1-.27z"/>
+      </svg>
+      Connect TikTok Account
+    </a>
+    <p class="scopes-note">Permissions requested: <strong>user.info.basic</strong>, <strong>video.publish</strong>, <strong>video.upload</strong></p>
 
-    <h2>What it does</h2>
-    <p>The developer produces short-form videos (interviews, community stories, real estate and local-business content
-    from South Florida) and uses this tool to schedule and publish them to TikTok automatically, instead of uploading
-    each one by hand.</p>
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">&#128274;</div>
+        <h3>Secure OAuth Login</h3>
+        <p>Connect with TikTok's official Login Kit. Your credentials never touch our servers.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128249;</div>
+        <h3>Video Publishing</h3>
+        <p>Upload and publish videos directly to TikTok with captions, privacy settings, and more.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128272;</div>
+        <h3>Privacy First</h3>
+        <p>Respects creator privacy settings. You control who sees your content.</p>
+      </div>
+    </div>
 
-    <h2>Who it's for</h2>
-    <p>This is a single-account personal tool operated by its developer. It does not collect, store, or process data
-    on behalf of other users, and it is not offered as a public multi-user service.</p>
-
-    <nav>
+    <div class="nav-links">
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms of Service</a>
       <a href="contact.html">Contact</a>
-    </nav>
-
+    </div>
     <footer>&copy; 2026 TalkVisual305</footer>
   </div>
+
+  <script>
+    (function() {
+      // TikTok OAuth configuration
+      var CLIENT_KEY = 'sbawtt9dvfqpyijkqd';  // Sandbox client key
+      var REDIRECT_URI = 'https://talkvisual305.net/callback';
+      var SCOPE = 'user.info.basic,video.publish,video.upload';
+
+      // Generate CSRF state token
+      function generateState() {
+        var array = new Uint8Array(16);
+        crypto.getRandomValues(array);
+        return Array.from(array, function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+      }
+
+      document.getElementById('connectBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        var state = generateState();
+        sessionStorage.setItem('tiktok_csrf_state', state);
+
+        var authUrl = 'https://www.tiktok.com/v2/auth/authorize/'
+          + '?client_key=' + CLIENT_KEY
+          + '&scope=' + encodeURIComponent(SCOPE)
+          + '&response_type=code'
+          + '&redirect_uri=' + encodeURIComponent(REDIRECT_URI)
+          + '&state=' + state;
+
+        window.location.href = authUrl;
+      });
+    })();
+  </script>
 </body>
 </html>
