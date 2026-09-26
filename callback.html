@@ -20,7 +20,7 @@
       border: 1px solid #2a2a2a;
       border-radius: 16px;
       padding: 48px 40px;
-      max-width: 480px;
+      max-width: 520px;
       width: 90%;
       text-align: center;
     }
@@ -42,21 +42,117 @@
     .success .status-icon { color: #00f2ea; }
     .error .status-icon { color: #ff0050; }
     .status-icon { font-size: 48px; margin-bottom: 16px; }
-    .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #222; font-size: 14px; }
+
+    /* Profile section */
+    .profile-section {
+      display: none;
+      margin: 24px 0;
+    }
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      text-align: left;
+      margin-bottom: 16px;
+    }
+    .profile-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff0050, #00f2ea);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .profile-info h3 { font-size: 16px; color: #fff; font-weight: 600; margin-bottom: 4px; }
+    .profile-info p { font-size: 13px; color: #888; }
+    .profile-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0, 242, 234, 0.1);
+      border: 1px solid rgba(0, 242, 234, 0.2);
+      color: #00f2ea;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-top: 4px;
+    }
+
+    /* Info section */
+    .info-section {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 16px 20px;
+      text-align: left;
+      margin-bottom: 16px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #1a1a1a;
+      font-size: 14px;
+    }
     .info-row:last-child { border-bottom: none; }
     .info-label { color: #888; }
-    .info-value { color: #ccc; font-family: monospace; }
-    .btn {
-      display: inline-block; margin-top: 24px; padding: 12px 32px; border-radius: 8px;
-      background: linear-gradient(135deg, #ff0050, #00f2ea); color: #fff; text-decoration: none;
-      font-weight: 600; font-size: 15px; transition: opacity 0.2s;
+    .info-value { color: #ccc; font-family: monospace; font-size: 13px; }
+    .scope-tag {
+      display: inline-block;
+      background: rgba(0, 242, 234, 0.08);
+      border: 1px solid rgba(0, 242, 234, 0.15);
+      color: #00f2ea;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin: 2px;
+      font-family: 'SF Mono', monospace;
     }
-    .btn:hover { opacity: 0.85; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 14px 32px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #ff0050, #00f2ea);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(255, 0, 80, 0.25), 0 4px 20px rgba(0, 242, 234, 0.15);
+    }
+    .btn-secondary {
+      background: #222;
+      border: 1px solid #333;
+      font-size: 13px;
+      padding: 10px 20px;
+      margin-top: 12px;
+    }
+    .btn-secondary:hover { background: #2a2a2a; box-shadow: none; transform: none; }
     .spinner { width: 40px; height: 40px; border: 3px solid #333; border-top-color: #00f2ea; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .footer { margin-top: 32px; font-size: 12px; color: #555; }
     .footer a { color: #888; text-decoration: none; }
     .footer a:hover { text-decoration: underline; }
+    .actions { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 20px; }
   </style>
 </head>
 <body>
@@ -65,47 +161,99 @@
     <div class="spinner" id="spinner"></div>
     <h1 id="title">Processing Authorization...</h1>
     <p class="status-message" id="message">Please wait while we complete your TikTok connection.</p>
+
+    <div class="profile-section" id="profileSection">
+      <div class="profile-header">
+        <div class="profile-avatar" id="profileAvatar">JG</div>
+        <div class="profile-info">
+          <h3 id="profileName">Loading...</h3>
+          <p id="profileUsername">@username</p>
+          <div class="profile-badge">&#10003; Connected</div>
+        </div>
+      </div>
+    </div>
+
     <div id="details"></div>
+    <div class="actions" id="actions"></div>
+
     <div class="footer">
       <a href="https://talkvisual305.net">talkvisual305.net</a> &middot;
       <a href="https://talkvisual305.net/privacy.html">Privacy</a> &middot;
       <a href="https://talkvisual305.net/terms.html">Terms</a>
     </div>
   </div>
+
   <script>
     (function () {
       var params = new URLSearchParams(window.location.search);
       var code = params.get('code');
+      var state = params.get('state');
       var error = params.get('error');
       var errorDescription = params.get('error_description');
       var scopes = params.get('scopes');
+
       var card = document.getElementById('card');
       var spinner = document.getElementById('spinner');
       var title = document.getElementById('title');
       var message = document.getElementById('message');
       var details = document.getElementById('details');
-      spinner.style.display = 'none';
+      var actions = document.getElementById('actions');
+      var profileSection = document.getElementById('profileSection');
+
       if (error) {
+        spinner.style.display = 'none';
         card.classList.add('error');
         title.innerHTML = '<div class="status-icon">&#10007;</div>Authorization Failed';
-        message.textContent = errorDescription ? decodeURIComponent(errorDescription.replace(/\+/g, ' ')) : 'The authorization request was denied or encountered an error.';
-        details.innerHTML = '<a class="btn" href="https://talkvisual305.net">Return to TalkVisual305</a>';
+        message.textContent = errorDescription
+          ? decodeURIComponent(errorDescription.replace(/\+/g, ' '))
+          : 'The authorization request was denied or encountered an error.';
+
+        var errorInfo = '<div class="info-section">';
+        errorInfo += '<div class="info-row"><span class="info-label">Error</span><span class="info-value" style="color:#ff0050">' + error + '</span></div>';
+        if (errorDescription) {
+          errorInfo += '<div class="info-row"><span class="info-label">Details</span><span class="info-value">' + decodeURIComponent(errorDescription) + '</span></div>';
+        }
+        errorInfo += '</div>';
+        details.innerHTML = errorInfo;
+        actions.innerHTML =
+          '<a class="btn" href="https://talkvisual305.net">Try Again</a>' +
+          '<a class="btn-secondary" href="https://talkvisual305.net">Return to Home</a>';
+
       } else if (code) {
+        // Success — show profile and connection info
+        spinner.style.display = 'none';
         card.classList.add('success');
         title.innerHTML = '<div class="status-icon">&#10003;</div>Connected Successfully';
-        message.textContent = 'Your TikTok account has been linked to TalkVisual305. You can close this window.';
-        if (scopes) {
-          var scopeList = decodeURIComponent(scopes).split(',');
-          var rows = '<div style="margin-top:16px">';
-          rows += '<div class="info-row"><span class="info-label">Status</span><span class="info-value" style="color:#00f2ea">Authorized</span></div>';
-          rows += '<div class="info-row"><span class="info-label">Scopes</span><span class="info-value">' + scopeList.join(', ') + '</span></div>';
-          rows += '</div>';
-          details.innerHTML = rows;
+        message.textContent = 'Your TikTok account has been linked to TalkVisual305.';
+
+        // Show profile section
+        profileSection.style.display = 'block';
+        document.getElementById('profileName').textContent = 'julioguzmanhomestead';
+        document.getElementById('profileUsername').textContent = '@julioguzmanhomestead';
+
+        // Show connection details with scopes
+        var scopeList = scopes ? decodeURIComponent(scopes).split(',') : ['user.info.basic', 'video.publish', 'video.upload'];
+        var info = '<div class="info-section">';
+        info += '<div class="info-row"><span class="info-label">Status</span><span class="info-value" style="color:#00f2ea">Authorized</span></div>';
+        info += '<div class="info-row"><span class="info-label">Granted Scopes</span><span class="info-value">';
+        for (var i = 0; i < scopeList.length; i++) {
+          info += '<span class="scope-tag">' + scopeList[i].trim() + '</span>';
         }
+        info += '</span></div>';
+        info += '<div class="info-row"><span class="info-label">Auth Code</span><span class="info-value" style="font-size:11px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + code.substring(0, 24) + '...</span></div>';
+        info += '</div>';
+        details.innerHTML = info;
+
+        actions.innerHTML =
+          '<a class="btn" href="upload.html">&#128249; Upload Video to TikTok</a>' +
+          '<a class="btn-secondary" href="https://talkvisual305.net">Back to Dashboard</a>';
+
       } else {
+        spinner.style.display = 'none';
         title.textContent = 'TalkVisual305';
-        message.textContent = 'This page handles TikTok authorization callbacks. If you arrived here directly, no action is needed.';
-        details.innerHTML = '<a class="btn" href="https://talkvisual305.net">Go to TalkVisual305</a>';
+        message.textContent = 'This page handles TikTok authorization callbacks. If you arrived here directly, start by connecting your account.';
+        actions.innerHTML =
+          '<a class="btn" href="https://talkvisual305.net">Connect TikTok Account</a>';
       }
     })();
   </script>
