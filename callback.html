@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TalkVisual305 — Authorization</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 48px 40px;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+    }
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff0050, #00f2ea);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: 700;
+      color: #fff;
+    }
+    h1 { font-size: 24px; font-weight: 600; margin-bottom: 12px; color: #ffffff; }
+    .status-message { font-size: 16px; line-height: 1.6; color: #a0a0a0; margin-bottom: 24px; }
+    .success .status-icon { color: #00f2ea; }
+    .error .status-icon { color: #ff0050; }
+    .status-icon { font-size: 48px; margin-bottom: 16px; }
+    .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #222; font-size: 14px; }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: #888; }
+    .info-value { color: #ccc; font-family: monospace; }
+    .btn {
+      display: inline-block; margin-top: 24px; padding: 12px 32px; border-radius: 8px;
+      background: linear-gradient(135deg, #ff0050, #00f2ea); color: #fff; text-decoration: none;
+      font-weight: 600; font-size: 15px; transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .spinner { width: 40px; height: 40px; border: 3px solid #333; border-top-color: #00f2ea; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .footer { margin-top: 32px; font-size: 12px; color: #555; }
+    .footer a { color: #888; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="logo">TV</div>
+    <div class="spinner" id="spinner"></div>
+    <h1 id="title">Processing Authorization...</h1>
+    <p class="status-message" id="message">Please wait while we complete your TikTok connection.</p>
+    <div id="details"></div>
+    <div class="footer">
+      <a href="https://talkvisual305.net">talkvisual305.net</a> &middot;
+      <a href="https://talkvisual305.net/privacy.html">Privacy</a> &middot;
+      <a href="https://talkvisual305.net/terms.html">Terms</a>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var code = params.get('code');
+      var error = params.get('error');
+      var errorDescription = params.get('error_description');
+      var scopes = params.get('scopes');
+      var card = document.getElementById('card');
+      var spinner = document.getElementById('spinner');
+      var title = document.getElementById('title');
+      var message = document.getElementById('message');
+      var details = document.getElementById('details');
+      spinner.style.display = 'none';
+      if (error) {
+        card.classList.add('error');
+        title.innerHTML = '<div class="status-icon">&#10007;</div>Authorization Failed';
+        message.textContent = errorDescription ? decodeURIComponent(errorDescription.replace(/\+/g, ' ')) : 'The authorization request was denied or encountered an error.';
+        details.innerHTML = '<a class="btn" href="https://talkvisual305.net">Return to TalkVisual305</a>';
+      } else if (code) {
+        card.classList.add('success');
+        title.innerHTML = '<div class="status-icon">&#10003;</div>Connected Successfully';
+        message.textContent = 'Your TikTok account has been linked to TalkVisual305. You can close this window.';
+        if (scopes) {
+          var scopeList = decodeURIComponent(scopes).split(',');
+          var rows = '<div style="margin-top:16px">';
+          rows += '<div class="info-row"><span class="info-label">Status</span><span class="info-value" style="color:#00f2ea">Authorized</span></div>';
+          rows += '<div class="info-row"><span class="info-label">Scopes</span><span class="info-value">' + scopeList.join(', ') + '</span></div>';
+          rows += '</div>';
+          details.innerHTML = rows;
+        }
+      } else {
+        title.textContent = 'TalkVisual305';
+        message.textContent = 'This page handles TikTok authorization callbacks. If you arrived here directly, no action is needed.';
+        details.innerHTML = '<a class="btn" href="https://talkvisual305.net">Go to TalkVisual305</a>';
+      }
+    })();
+  </script>
+</body>
+</html>
