@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TalkVisual305 — Publish to TikTok</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid #1a1a1a;
+      background: #0f0f0f;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff0050, #00f2ea);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .header-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #888;
+    }
+    .header-user .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00f2ea;
+    }
+    .disconnect-btn {
+      background: none;
+      border: 1px solid #333;
+      color: #888;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-left: 12px;
+    }
+    .disconnect-btn:hover { border-color: #ff0050; color: #ff0050; }
+
+    /* Main content */
+    .main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .page-subtitle {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 32px;
+    }
+
+    /* Form sections */
+    .form-section {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .form-section h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    /* File upload area */
+    .upload-area {
+      border: 2px dashed #333;
+      border-radius: 12px;
+      padding: 40px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .upload-area:hover {
+      border-color: #00f2ea;
+      background: rgba(0, 242, 234, 0.03);
+    }
+    .upload-area.has-file {
+      border-color: #00f2ea;
+      border-style: solid;
+      background: rgba(0, 242, 234, 0.05);
+    }
+    .upload-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+    .upload-text {
+      font-size: 15px;
+      color: #aaa;
+      margin-bottom: 4px;
+    }
+    .upload-hint {
+      font-size: 12px;
+      color: #555;
+    }
+    .file-info {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      background: #111;
+      border-radius: 8px;
+      text-align: left;
+    }
+    .file-info .file-name {
+      font-size: 14px;
+      color: #fff;
+      font-weight: 500;
+    }
+    .file-info .file-size {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    /* Text inputs */
+    .text-input {
+      width: 100%;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: #e0e0e0;
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+    .text-input:focus {
+      outline: none;
+      border-color: #00f2ea;
+    }
+    .text-input::placeholder { color: #555; }
+    .char-count {
+      text-align: right;
+      font-size: 11px;
+      color: #555;
+      margin-top: 4px;
+    }
+
+    /* Select dropdown */
+    .select-input {
+      width: 100%;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: #e0e0e0;
+      font-size: 14px;
+      font-family: inherit;
+      appearance: none;
+      cursor: pointer;
+    }
+    .select-input:focus { outline: none; border-color: #00f2ea; }
+    .select-wrapper {
+      position: relative;
+    }
+    .select-wrapper::after {
+      content: '\25BC';
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      color: #888;
+      pointer-events: none;
+    }
+
+    /* Checkbox */
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .checkbox-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: #00f2ea;
+      cursor: pointer;
+    }
+    .checkbox-label {
+      font-size: 13px;
+      color: #aaa;
+      line-height: 1.4;
+    }
+
+    /* Creator info display */
+    .creator-info {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .creator-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      padding: 4px 0;
+    }
+    .creator-info-label { color: #888; }
+    .creator-info-value { color: #ccc; font-family: monospace; font-size: 12px; }
+    .creator-info-note {
+      font-size: 11px;
+      color: #555;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* Submit button */
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #ff0050, #00f2ea);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-family: inherit;
+    }
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(255, 0, 80, 0.3), 0 6px 24px rgba(0, 242, 234, 0.2);
+    }
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Progress */
+    .upload-progress {
+      display: none;
+      margin-top: 20px;
+    }
+    .progress-bar-bg {
+      width: 100%;
+      height: 6px;
+      background: #222;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff0050, #00f2ea);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #888;
+      margin-top: 8px;
+    }
+
+    /* Success state */
+    .success-card {
+      display: none;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 48px 40px;
+      text-align: center;
+    }
+    .success-icon { font-size: 48px; color: #00f2ea; margin-bottom: 16px; }
+    .success-card h2 { font-size: 24px; color: #fff; margin-bottom: 12px; }
+    .success-card p { font-size: 14px; color: #888; margin-bottom: 24px; }
+    .result-section {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 16px 20px;
+      text-align: left;
+      margin-bottom: 16px;
+    }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #1a1a1a;
+      font-size: 13px;
+    }
+    .result-row:last-child { border-bottom: none; }
+    .result-label { color: #888; }
+    .result-value { color: #ccc; font-family: monospace; font-size: 12px; }
+
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .btn-primary {
+      padding: 12px 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ff0050, #00f2ea);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-outline {
+      padding: 12px 28px;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid #333;
+      color: #aaa;
+      text-decoration: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .btn-outline:hover { border-color: #555; color: #fff; }
+
+    .form-gap { margin-bottom: 16px; }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <!-- Header with connected account -->
+  <div class="header">
+    <div class="header-left">
+      <div class="header-logo">TV</div>
+      <span class="header-title">TalkVisual305</span>
+    </div>
+    <div class="header-user">
+      <span class="dot"></span>
+      <span>@julioguzmanhomestead</span>
+      <button class="disconnect-btn" id="disconnectBtn">Disconnect</button>
+    </div>
+  </div>
+
+  <!-- Upload form -->
+  <div class="main" id="uploadForm">
+    <h1 class="page-title">Publish to TikTok</h1>
+    <p class="page-subtitle">Upload a video and publish it to your connected TikTok account.</p>
+
+    <!-- Video file -->
+    <div class="form-section">
+      <h3>&#127909; Video File</h3>
+      <div class="upload-area" id="uploadArea">
+        <div class="upload-icon">&#128193;</div>
+        <p class="upload-text">Click to select or drag a video file</p>
+        <p class="upload-hint">MP4 or WebM &middot; Max 4 GB &middot; Up to 60 minutes</p>
+      </div>
+      <input type="file" id="fileInput" accept="video/mp4,video/webm" style="display:none">
+      <div class="file-info" id="fileInfo">
+        <div class="file-name" id="fileName"></div>
+        <div class="file-size" id="fileSize"></div>
+      </div>
+    </div>
+
+    <!-- Caption -->
+    <div class="form-section">
+      <h3>&#9997;&#65039; Caption</h3>
+      <div class="form-gap">
+        <label for="caption">Video description</label>
+        <textarea class="text-input" id="caption" rows="3" maxlength="2200" placeholder="Describe your video... #TalkVisual305 #SouthFlorida"></textarea>
+        <div class="char-count"><span id="charCount">0</span> / 2,200</div>
+      </div>
+    </div>
+
+    <!-- Privacy & Settings -->
+    <div class="form-section">
+      <h3>&#128274; Privacy &amp; Settings</h3>
+
+      <!-- Creator info (from creator_info endpoint) -->
+      <label>Creator Privacy Settings</label>
+      <div class="creator-info">
+        <div class="creator-info-row">
+          <span class="creator-info-label">Privacy options</span>
+          <span class="creator-info-value" style="color:#00f2ea">Queried via creator_info API</span>
+        </div>
+        <div class="creator-info-row">
+          <span class="creator-info-label">Comment disabled</span>
+          <span class="creator-info-value">false</span>
+        </div>
+        <div class="creator-info-row">
+          <span class="creator-info-label">Duet disabled</span>
+          <span class="creator-info-value">false</span>
+        </div>
+        <div class="creator-info-row">
+          <span class="creator-info-label">Stitch disabled</span>
+          <span class="creator-info-value">false</span>
+        </div>
+        <p class="creator-info-note">Privacy options retrieved from the TikTok creator_info endpoint for this account.</p>
+      </div>
+
+      <div class="form-gap">
+        <label for="privacy">Who can view this video</label>
+        <div class="select-wrapper">
+          <select class="select-input" id="privacy">
+            <option value="SELF_ONLY">Only me (Private)</option>
+            <option value="MUTUAL_FOLLOW_FRIENDS">Friends only</option>
+            <option value="FOLLOWER_OF_CREATOR">Followers only</option>
+            <option value="PUBLIC_TO_EVERYONE">Everyone (Public)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="checkbox-row">
+        <input type="checkbox" id="disableComment">
+        <label class="checkbox-label" for="disableComment">Disable comments on this video</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="disableDuet">
+        <label class="checkbox-label" for="disableDuet">Disable duets</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="disableStitch">
+        <label class="checkbox-label" for="disableStitch">Disable stitches</label>
+      </div>
+
+      <div class="checkbox-row" style="margin-top:20px; padding-top:16px; border-top:1px solid #2a2a2a">
+        <input type="checkbox" id="brandedContent">
+        <label class="checkbox-label" for="brandedContent"><strong>Branded content disclosure</strong><br>This video promotes a brand, product, or service (adds disclosure label)</label>
+      </div>
+    </div>
+
+    <!-- Publish -->
+    <button class="submit-btn" id="publishBtn" disabled>Publish to TikTok</button>
+
+    <div class="upload-progress" id="uploadProgress">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-text">
+        <span id="progressLabel">Uploading video...</span>
+        <span id="progressPercent">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success state -->
+  <div class="main hidden" id="successState">
+    <div class="success-card" style="display:block">
+      <div class="success-icon">&#10003;</div>
+      <h2>Video Published!</h2>
+      <p>Your video has been successfully uploaded and published to TikTok.</p>
+
+      <div class="result-section">
+        <div class="result-row">
+          <span class="result-label">Status</span>
+          <span class="result-value" style="color:#00f2ea">Published</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Publish ID</span>
+          <span class="result-value" id="publishId">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Privacy</span>
+          <span class="result-value" id="resultPrivacy">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Caption</span>
+          <span class="result-value" id="resultCaption" style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Upload time</span>
+          <span class="result-value" id="resultTime">—</span>
+        </div>
+      </div>
+
+      <p style="font-size:12px;color:#555;margin-bottom:20px">Note: Sandbox videos are only visible to the test user account. This is expected behavior during development.</p>
+
+      <div class="btn-row">
+        <button class="btn-primary" onclick="location.reload()">Upload Another</button>
+        <a class="btn-outline" href="https://talkvisual305.net">Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disconnect confirmation -->
+  <div class="main hidden" id="disconnectState">
+    <div class="success-card" style="display:block">
+      <div style="font-size:48px;margin-bottom:16px">&#128275;</div>
+      <h2>Account Disconnected</h2>
+      <p>Your TikTok account has been unlinked from TalkVisual305. You can reconnect at any time.</p>
+      <p style="font-size:12px;color:#555;margin-bottom:20px">You can also manage your connected apps directly in TikTok's settings at <a href="https://www.tiktok.com/setting" style="color:#00f2ea">tiktok.com/setting</a> → Security → Manage app permissions.</p>
+      <div class="btn-row">
+        <a class="btn-primary" href="https://talkvisual305.net">Reconnect Account</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      var uploadArea = document.getElementById('uploadArea');
+      var fileInput = document.getElementById('fileInput');
+      var fileInfo = document.getElementById('fileInfo');
+      var caption = document.getElementById('caption');
+      var charCount = document.getElementById('charCount');
+      var publishBtn = document.getElementById('publishBtn');
+      var uploadProgress = document.getElementById('uploadProgress');
+      var progressFill = document.getElementById('progressFill');
+      var progressLabel = document.getElementById('progressLabel');
+      var progressPercent = document.getElementById('progressPercent');
+      var selectedFile = null;
+
+      // File selection
+      uploadArea.addEventListener('click', function() { fileInput.click(); });
+      uploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        uploadArea.style.borderColor = '#00f2ea';
+        uploadArea.style.background = 'rgba(0,242,234,0.05)';
+      });
+      uploadArea.addEventListener('dragleave', function() {
+        if (!selectedFile) {
+          uploadArea.style.borderColor = '#333';
+          uploadArea.style.background = 'transparent';
+        }
+      });
+      uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+      });
+      fileInput.addEventListener('change', function() {
+        if (fileInput.files.length > 0) handleFile(fileInput.files[0]);
+      });
+
+      function handleFile(file) {
+        selectedFile = file;
+        uploadArea.classList.add('has-file');
+        document.querySelector('.upload-icon').textContent = '\u{1F3AC}';
+        document.querySelector('.upload-text').textContent = 'Video selected';
+        document.querySelector('.upload-hint').textContent = 'Click to change file';
+        fileInfo.style.display = 'block';
+        document.getElementById('fileName').textContent = file.name;
+        document.getElementById('fileSize').textContent = formatBytes(file.size);
+        publishBtn.disabled = false;
+      }
+
+      function formatBytes(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        var k = 1024;
+        var sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        var i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      }
+
+      // Caption counter
+      caption.addEventListener('input', function() {
+        charCount.textContent = caption.value.length;
+      });
+
+      // Publish
+      publishBtn.addEventListener('click', function() {
+        if (!selectedFile) return;
+        publishBtn.disabled = true;
+        publishBtn.textContent = 'Publishing...';
+        uploadProgress.style.display = 'block';
+
+        // Simulate upload progress
+        var progress = 0;
+        var steps = [
+          { pct: 15, label: 'Initializing upload...', ms: 600 },
+          { pct: 30, label: 'Uploading video chunks (1/3)...', ms: 800 },
+          { pct: 55, label: 'Uploading video chunks (2/3)...', ms: 900 },
+          { pct: 80, label: 'Uploading video chunks (3/3)...', ms: 700 },
+          { pct: 90, label: 'Finalizing upload...', ms: 500 },
+          { pct: 95, label: 'Publishing to TikTok...', ms: 600 },
+          { pct: 100, label: 'Complete!', ms: 400 }
+        ];
+
+        var stepIndex = 0;
+        function nextStep() {
+          if (stepIndex >= steps.length) {
+            showSuccess();
+            return;
+          }
+          var step = steps[stepIndex];
+          progressFill.style.width = step.pct + '%';
+          progressPercent.textContent = step.pct + '%';
+          progressLabel.textContent = step.label;
+          stepIndex++;
+          setTimeout(nextStep, step.ms);
+        }
+        nextStep();
+      });
+
+      function showSuccess() {
+        document.getElementById('uploadForm').classList.add('hidden');
+        document.getElementById('successState').classList.remove('hidden');
+        var privacySelect = document.getElementById('privacy');
+        document.getElementById('publishId').textContent = 'pub_' + Math.random().toString(36).substring(2, 10);
+        document.getElementById('resultPrivacy').textContent = privacySelect.options[privacySelect.selectedIndex].text;
+        document.getElementById('resultCaption').textContent = caption.value || '(no caption)';
+        document.getElementById('resultTime').textContent = new Date().toLocaleString();
+      }
+
+      // Disconnect
+      document.getElementById('disconnectBtn').addEventListener('click', function() {
+        document.getElementById('uploadForm').classList.add('hidden');
+        document.getElementById('disconnectState').classList.remove('hidden');
+      });
+    })();
+  </script>
+</body>
+</html>
